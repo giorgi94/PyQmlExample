@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
+import io.qml.locals 1.0
 
 ApplicationWindow {
     visible: true
@@ -9,14 +10,24 @@ ApplicationWindow {
     height: 480
     title: qsTr("My Qml Window")
 
+    BackEnd {
+        id: backend
+    }
+
     ToolBar {
         RowLayout {
             anchors.fill: parent
-            Button {
+            ToolButton {
                 text: qsTr("Open")
+                onClicked: {
+                    console.log(myVar.B.C, backend.name)
+                }
             }
-            Button {
+            ToolButton {
                 text: qsTr("Save")
+                onClicked: {
+                    backend.name = "Alex"
+                }
             }
         }
     }
