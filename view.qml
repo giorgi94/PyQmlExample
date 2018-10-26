@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import QtWebView 1.1
+import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     visible: true
@@ -9,25 +9,56 @@ ApplicationWindow {
     title: qsTr("My Qml Window")
 
 
-    Rectangle {
-        width: 200
-        height: 200
-        color: "#ff0000"
-        border.color: "#000000"
-        border.width: 4
+    ColorDialog {
+        id: colorDialog
+        modality: Qt.WindowModal
+        title: "Choose a color"
+        color: "green"
+        onAccepted: { console.log("Accepted: " + color) }
+        onRejected: { console.log("Rejected!") }
+    }
 
-        anchors.centerIn: parent
+    FontDialog {
+        id: fontDialog
+        modality: Qt.WindowModal
+        title: "Choose a font"
+        onAccepted: { console.log("Accepted: " + color) }
+        onRejected: { console.log("Rejected!") }
+    }
 
-        Rectangle {
-            width: 50
-            height: 50
-            color: "green"
-            border.color: "#000000"
-            border.width: 4
+    Row {
+        Button {
+            id: btnColor
+            text: "Color"
+            onClicked: {
+                colorDialog.open()
+            }
+        }
 
-            anchors.centerIn: parent
+        Button {
+            id: btnFont
+            text: "Font"
+            onClicked: {
+                fontDialog.open()
+            }
+        }
+
+        TextField {
+            id: txtText
+            text: "Enter some text"
+            width: 300
         }
     }
+
+
+    Text {
+        id: preview
+        anchors.centerIn: parent
+        font: fontDialog.font
+        color: colorDialog.color
+        text: txtText.text
+    }
+
 
 
 
