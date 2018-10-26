@@ -1,6 +1,7 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     visible: true
@@ -8,58 +9,65 @@ ApplicationWindow {
     height: 480
     title: qsTr("My Qml Window")
 
-
-    ColorDialog {
-        id: colorDialog
-        modality: Qt.WindowModal
-        title: "Choose a color"
-        color: "green"
-        onAccepted: { console.log("Accepted: " + color) }
-        onRejected: { console.log("Rejected!") }
-    }
-
-    FontDialog {
-        id: fontDialog
-        modality: Qt.WindowModal
-        title: "Choose a font"
-        onAccepted: { console.log("Accepted: " + color) }
-        onRejected: { console.log("Rejected!") }
-    }
-
-    Row {
-        Button {
-            id: btnColor
-            text: "Color"
-            onClicked: {
-                colorDialog.open()
+    ToolBar {
+        RowLayout {
+            anchors.fill: parent
+            Button {
+                text: qsTr("Open")
+            }
+            Button {
+                text: qsTr("Save")
             }
         }
+    }
 
-        Button {
-            id: btnFont
-            text: "Font"
-            onClicked: {
-                fontDialog.open()
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        onAccepted: {
+            addressField.insert(0, fileDialog.fileUrls)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+    }
+
+
+    Rectangle {
+        id: box
+        x: 10
+        height: 40
+        width: parent.width - 2*this.x
+        border.width: 1
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+
+        RowLayout {
+            spacing: 2
+
+            height: parent.height - 10
+            width: parent.width - 10
+
+            anchors.centerIn: parent
+
+            TextField {
+                id: addressField
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignLeft
+                Layout.fillWidth: true
+            }
+
+            Button {
+                id: openBtn
+                text: "Open Source"
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignRight
+                onClicked: {
+                    fileDialog.open()
+                }
             }
         }
-
-        TextField {
-            id: txtText
-            text: "Enter some text"
-            width: 300
-        }
     }
-
-
-    Text {
-        id: preview
-        anchors.centerIn: parent
-        font: fontDialog.font
-        color: colorDialog.color
-        text: txtText.text
-    }
-
-
 
 
 }
