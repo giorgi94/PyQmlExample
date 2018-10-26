@@ -17,6 +17,7 @@ class BackEnd(QQuickItem):
 
     def __init__(self, parent=None):
         QQuickItem.__init__(self, parent)
+
         self._name = "john"
 
     def getName(self):

@@ -4,17 +4,22 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 import io.qml.locals 1.0
 
+import QtMultimedia 5.8
+
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
     title: qsTr("My Qml Window")
 
+    property var file_location: ""
+
     BackEnd {
         id: backend
     }
 
     ToolBar {
+        id: toolBar
         RowLayout {
             anchors.fill: parent
             ToolButton {
@@ -36,10 +41,50 @@ ApplicationWindow {
         id: fileDialog
         title: "Please choose a file"
         onAccepted: {
-            addressField.insert(0, fileDialog.fileUrls)
+
+            if(addressField.selectionEnd != 0) {
+                addressField.remove(0, addressField.selectionEnd)
+            }
+
+            file_location = fileDialog.fileUrls
+
+            addressField.insert(0, file_location)
+
+
+
+            console.log("location: ", file_location)
         }
         onRejected: {
             console.log("Canceled")
+        }
+    }
+
+
+
+    Rectangle {
+        y: toolBar.height + 10
+        width: parent.width
+        height: 200
+        border.width: 1
+
+        Video {
+            id: video
+
+            anchors.fill: parent
+
+            source: "file:///home/gio/Videos/video.mp4"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    video.play()
+                }
+            }
+
+            focus: true
+            Keys.onSpacePressed: video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
+            Keys.onLeftPressed: video.seek(video.position - 5000)
+            Keys.onRightPressed: video.seek(video.position + 5000)
         }
     }
 
@@ -79,6 +124,5 @@ ApplicationWindow {
             }
         }
     }
-
 
 }
