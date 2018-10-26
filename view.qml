@@ -8,9 +8,27 @@ ApplicationWindow {
     height: 480
     title: qsTr("My Qml Window")
 
-     WebView {
-        id: webView
-        anchors.fill: parent
-        url: "https://www.youtube.com/"
+
+    Rectangle {
+        width: 200
+        height: 200
+        color: "#ff0000"
+        border.color: "#000000"
+        border.width: 4
+
+        anchors.centerIn: parent
+
+        Rectangle {
+            width: 50
+            height: 50
+            color: "green"
+            border.color: "#000000"
+            border.width: 4
+
+            anchors.centerIn: parent
+        }
     }
+
+
+
 }
